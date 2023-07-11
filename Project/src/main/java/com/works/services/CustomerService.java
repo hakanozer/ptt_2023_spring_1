@@ -4,6 +4,9 @@ import com.works.entities.Customer;
 import com.works.repositories.CustomerRepository;
 import com.works.utils.Rest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,7 @@ public class CustomerService {
         return Rest.success(customerList);
     }
 
-    public ResponseEntity delete( String  stCid ) {
+    public ResponseEntity delete( String stCid ) {
         try {
             Long cid = Long.parseLong(stCid);
             customerRepository.deleteById(cid);
@@ -64,5 +67,13 @@ public class CustomerService {
             return Rest.fail("Email or Password Fail", HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    public Page<Customer> customerPage(int page, String q) {
+        Pageable pageable = PageRequest.of(page, 4);
+        Page<Customer> customerPage = customerRepository.findByNameContainsOrPhoneContainsOrEmailContains(q,q,q,pageable);
+        return customerPage;
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.works.restcontrollers;
 import com.works.entities.Customer;
 import com.works.services.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +40,14 @@ public class CustomerRestController {
     public ResponseEntity login( @RequestBody Customer customer ) {
         return customerService.login(customer);
     }
+
+    @GetMapping("/search")
+    public Page<Customer> customerPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "") String q
+    ) {
+        return customerService.customerPage(page, q);
+    }
+
 
 }
