@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,6 +43,25 @@ public class CustomerService {
             return Rest.success("Delete Success");
         }catch (Exception ex) {
             return Rest.fail(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    public ResponseEntity update( Customer customer ) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getCid());
+        if ( optionalCustomer.isPresent() ) {
+            customerRepository.saveAndFlush(customer);
+            return Rest.success(customer);
+        }
+        return Rest.fail(customer.getCid() + " Not found", HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity login( Customer customer ) {
+        Optional<Customer> optionalCustomer = customerRepository.findByEmailEqualsIgnoreCaseAndPasswordEquals(customer.getEmail(), customer.getPassword());
+        if(optionalCustomer.isPresent() ) {
+            return Rest.success( optionalCustomer.get() );
+        }else {
+            return Rest.fail("Email or Password Fail", HttpStatus.BAD_REQUEST);
         }
     }
 

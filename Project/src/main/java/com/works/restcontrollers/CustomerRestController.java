@@ -30,4 +30,14 @@ public class CustomerRestController {
         return customerService.delete(stCid);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity update( @Valid @RequestBody Customer customer ) {
+        return customerService.update(customer);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login( @RequestBody Customer customer ) {
+        return customerService.login(customer);
+    }
+
 }
