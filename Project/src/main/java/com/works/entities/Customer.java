@@ -38,7 +38,7 @@ public class Customer {
     @Column(unique = true, length = 100)
     private String email;
 
-    @Size(min = 5, max = 15)
+    @Size(min = 5, max = 500)
     @NotEmpty
     @NotNull
     @Column(length = 500)
