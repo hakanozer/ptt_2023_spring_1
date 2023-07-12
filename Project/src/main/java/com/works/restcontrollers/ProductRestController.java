@@ -28,9 +28,10 @@ public class ProductRestController {
     @GetMapping("/list/{cid}")
     public ResponseEntity list(
             @PathVariable Long cid,
-            @RequestParam(defaultValue = "0") int pageCount
+            @RequestParam(defaultValue = "0") int pageCount,
+            @RequestParam(defaultValue = "asc") String sortType
     ) {
-        return productService.list(cid, pageCount);
+        return productService.list(cid, pageCount, sortType);
     }
 
 }

@@ -6,6 +6,7 @@ import com.works.utils.Rest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,12 @@ public class ProductService {
         return Rest.success(list);
     }
 
-    public ResponseEntity list(Long cid, int pageCount) {
-        Pageable page = PageRequest.of(pageCount,2);
+    public ResponseEntity list(Long cid, int pageCount, String sortType) {
+        Sort sort = Sort.by("price").ascending();
+        if ( sortType.equals("desc")) {
+            sort = Sort.by("price").descending();
+        }
+        Pageable page = PageRequest.of(pageCount,2, sort);
         return Rest.success( productRepository.allProCat(cid, page) );
     }
 
