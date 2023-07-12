@@ -1,5 +1,6 @@
 package com.works.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
 @Data
 // @AllArgsConstructor
 // @NoArgsConstructor
-public class Customer {
+public class Customer extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

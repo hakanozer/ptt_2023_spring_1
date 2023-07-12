@@ -1,6 +1,7 @@
 package com.works.services;
 
 import com.works.entities.Customer;
+import com.works.entities.dto.CustomerDto;
 import com.works.repositories.CustomerRepository;
 import com.works.utils.Rest;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,8 @@ public class CustomerService {
         try {
             //customer.setPassword(UUID.randomUUID().toString());
             customerRepository.save(customer);
-            return Rest.success(customer);
+            CustomerDto dto = new CustomerDto(customer.getName(), customer.getPhone(), customer.getEmail());
+            return Rest.success(dto);
         }catch (Exception ex) {
             return Rest.fail(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
