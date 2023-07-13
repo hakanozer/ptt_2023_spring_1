@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 
 @Configuration
@@ -16,6 +17,15 @@ public class FilterConfig implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
+
+        String ip = req.getRemoteAddr();
+        String header = req.getHeader("user-agent");
+        Enumeration<String> enumeration = req.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String key = enumeration.nextElement();
+            System.out.println( key );
+        }
+
 
         String url = req.getRequestURI();
         String[] freeUrls = {"/admin/login"};
@@ -42,6 +52,8 @@ public class FilterConfig implements Filter {
         }else {
             filterChain.doFilter(req, res);
         }
+
+        System.out.println(url +" " + ip + " " + header );
 
     }
 
