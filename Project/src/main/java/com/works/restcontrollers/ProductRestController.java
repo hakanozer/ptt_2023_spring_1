@@ -41,4 +41,9 @@ public class ProductRestController {
         return productService.dummyProduct();
     }
 
+    @PostMapping("/dummAdd")
+    public DummyProduct dummAdd( @RequestBody DummyProduct dummyProduct ) {
+        return productService.dummSave(dummyProduct);
+    }
+
 }

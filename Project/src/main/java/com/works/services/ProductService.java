@@ -1,5 +1,6 @@
 package com.works.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.works.entities.Product;
 import com.works.models.DummyProducts;
 import com.works.models.DummyProduct;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +25,7 @@ public class ProductService {
 
     final ProductRepository productRepository;
     final RestTemplate restTemplate;
+    final ObjectMapper objectMapper;
 
     public ResponseEntity save(Product product) {
         productRepository.save(product);
@@ -46,6 +51,22 @@ public class ProductService {
         String url = "https://dummyjson.com/products";
         DummyProducts stData = restTemplate.getForObject(url, DummyProducts.class);
         return stData.getProducts();
+    }
+
+    public DummyProduct dummSave( DummyProduct dummyProduct ) {
+        String url = "https://dummyjson.com/products/add";
+        String sendata = "";
+        try {
+            sendata = objectMapper.writeValueAsString(dummyProduct);
+        }catch (Exception ex) {}
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity httpEntity = new HttpEntity(sendata, headers);
+
+        ResponseEntity<DummyProduct> entity = restTemplate.postForEntity(url, httpEntity, DummyProduct.class );
+
+        return entity.getBody();
     }
 
 }
