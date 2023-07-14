@@ -1,6 +1,7 @@
 package com.works.restcontrollers;
 
 import com.works.entities.Product;
+import com.works.models.DummyProduct;
 import com.works.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,12 @@ public class ProductRestController {
             @RequestParam(defaultValue = "asc") String sortType
     ) {
         return productService.list(cid, pageCount, sortType);
+    }
+
+
+    @GetMapping("/dummyProduct")
+    public List<DummyProduct> dummyProduct() {
+        return productService.dummyProduct();
     }
 
 }

@@ -1,6 +1,8 @@
 package com.works.services;
 
 import com.works.entities.Product;
+import com.works.models.DummyProducts;
+import com.works.models.DummyProduct;
 import com.works.repositories.ProductRepository;
 import com.works.utils.Rest;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 public class ProductService {
 
     final ProductRepository productRepository;
+    final RestTemplate restTemplate;
 
     public ResponseEntity save(Product product) {
         productRepository.save(product);
@@ -35,6 +39,13 @@ public class ProductService {
         }
         Pageable page = PageRequest.of(pageCount,2, sort);
         return Rest.success( productRepository.allProCat(cid, page) );
+    }
+
+    // Dummy DummyProduct
+    public List<DummyProduct> dummyProduct() {
+        String url = "https://dummyjson.com/products";
+        DummyProducts stData = restTemplate.getForObject(url, DummyProducts.class);
+        return stData.getProducts();
     }
 
 }
